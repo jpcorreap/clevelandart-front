@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ArtworkCard from "./components/ArtworkCard";
 
 const data = [
@@ -11911,6 +11911,15 @@ function App() {
   //const [data, setData] = useState(undefined);
   const [page, setPage] = useState(0);
 
+  const [loading, setLoading] = useState(true);
+  const counter = useRef(0);
+  const imageLoaded = () => {
+    counter.current += 1;
+    if (counter.current >= data.length) {
+      setLoading(false);
+    }
+  };
+
   // useEffect(() => {
   //   fetch(
   //     `https://openaccess-api.clevelandart.org/api/artworks?has_image=1&limit=20&skip=${
@@ -11923,10 +11932,6 @@ function App() {
   //       setData(data);
   //     });
   // }, [page]);
-
-  if (!data) {
-    return <p>Cargando...</p>;
-  }
 
   return (
     <>
@@ -11948,7 +11953,12 @@ function App() {
           {data /*.data*/
             .slice(0, 5)
             .map((artwork) => (
-              <ArtworkCard key={`artwork_${artwork.id}`} artwork={artwork} />
+              <ArtworkCard
+                key={`artwork_${artwork.id}`}
+                artwork={artwork}
+                notifyImageLoaded={imageLoaded}
+                isLoading={loading}
+              />
             ))}
         </Grid>
         <Grid
@@ -11962,7 +11972,12 @@ function App() {
           {data /*.data*/
             .slice(5, 10)
             .map((artwork) => (
-              <ArtworkCard key={`artwork_${artwork.id}`} artwork={artwork} />
+              <ArtworkCard
+                key={`artwork_${artwork.id}`}
+                artwork={artwork}
+                notifyImageLoaded={imageLoaded}
+                isLoading={loading}
+              />
             ))}
         </Grid>
         <Grid
@@ -11976,7 +11991,12 @@ function App() {
           {data /*.data*/
             .slice(10, 15)
             .map((artwork) => (
-              <ArtworkCard key={`artwork_${artwork.id}`} artwork={artwork} />
+              <ArtworkCard
+                key={`artwork_${artwork.id}`}
+                artwork={artwork}
+                notifyImageLoaded={imageLoaded}
+                isLoading={loading}
+              />
             ))}
         </Grid>
         <Grid
@@ -11990,7 +12010,12 @@ function App() {
           {data /*.data*/
             .slice(15, 20)
             .map((artwork) => (
-              <ArtworkCard key={`artwork_${artwork.id}`} artwork={artwork} />
+              <ArtworkCard
+                key={`artwork_${artwork.id}`}
+                artwork={artwork}
+                notifyImageLoaded={imageLoaded}
+                isLoading={loading}
+              />
             ))}
         </Grid>
       </Grid>

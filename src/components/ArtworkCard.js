@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -9,10 +9,13 @@ import Typography from "@mui/material/Typography";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
 
 const CustomizedCard = styled((props) => <Card {...props} />)(() => ({
   margin: "20px 10px 20px 10px",
   borderRadius: "0px 0px 20px 20px",
+  minHeight: "200px",
 }));
 
 const CustomizedAccordion = styled((props) => (
@@ -29,15 +32,53 @@ const CustomizedAccordion = styled((props) => (
   },
 }));
 
-export default function ArtworkCard({ artwork }) {
+export default function ArtworkCard({ artwork, isLoading, notifyImageLoaded }) {
+  const [image, setImage] = useState({});
+
+  const handleImageLoaded = () => {
+    notifyImageLoaded(true);
+  };
+
+  useEffect(() => {
+    const image = new Image();
+    image.onload = handleImageLoaded;
+    image.src = artwork.images.web.url;
+    setImage(image);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <CustomizedCard elevation={0}>
+        <CardContent style={{ padding: 0 }}>
+          <Skeleton
+            variant="rectangular"
+            width={"100%"}
+            height={150}
+            animation="wave"
+          />
+          <div style={{ padding: "10px" }}>
+            <Skeleton
+              variant="rectangular"
+              width={"100%"}
+              height={30}
+              animation="wave"
+              style={{ borderRadius: "20px" }}
+            />
+          </div>
+        </CardContent>
+      </CustomizedCard>
+    );
+  }
+
   return (
     <CustomizedCard elevation={0}>
       <CardMedia
         component="img"
         width="100%"
         height="auto"
-        src={artwork.images.web.url}
+        src={image.src}
         alt="a piece of art at the museum"
+        onLoad={handleImageLoaded}
       />
       <CardContent style={{ padding: 0 }}>
         <CustomizedAccordion elevation={0} disableGutters>
