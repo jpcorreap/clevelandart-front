@@ -1,6 +1,7 @@
-import { Grid } from "@mui/material";
-import moment from "moment";
 import * as React from "react";
+import PropTypes from "prop-types";
+
+import { Grid } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,7 +14,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import moment from "moment";
 
 const basicInfoToDisplay = [
   {
@@ -85,11 +86,11 @@ function ArtworkInformation({ artwork }) {
             <Typography
               sx={{ ml: 2, flex: 1 }}
               variant="h4"
-              style={{ marginBottom: "15px" }}
+              style={{ margin: "15px" }}
             >
               {artwork.title}
             </Typography>
-            <TableContainer component={Paper}>
+            <TableContainer>
               <Table aria-label="simple table">
                 <TableBody>
                   <TableRow
@@ -98,7 +99,7 @@ function ArtworkInformation({ artwork }) {
                   >
                     <TableCell component="th" scope="row" align="left">
                       <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
-                        Creators
+                        {artwork.creators.length > 1 ? "Creators" : "Creator"}
                       </Typography>
                     </TableCell>
                     <TableCell align="left">
@@ -110,7 +111,9 @@ function ArtworkInformation({ artwork }) {
                   {basicInfoToDisplay.map((info) => (
                     <TableRow
                       key={info.title}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                      }}
                     >
                       <TableCell component="th" scope="row" align="left">
                         <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
@@ -203,3 +206,9 @@ export default function ArtworkDetail({ open, handleClose, artwork }) {
     </Dialog>
   );
 }
+
+ArtworkDetail.propTypes = {
+  open: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  artwork: PropTypes.object.isRequired,
+};
