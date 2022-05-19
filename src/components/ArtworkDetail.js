@@ -1,20 +1,64 @@
 import { Grid } from "@mui/material";
 import moment from "moment";
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import ListItemText from "@mui/material/ListItemText";
-import ListItem from "@mui/material/ListItem";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
+const basicInfoToDisplay = [
+  {
+    title: "Creation date",
+    id: "creation_date",
+  },
+  {
+    title: "Technique",
+    id: "technique",
+  },
+  {
+    title: "Department",
+    id: "department",
+  },
+  {
+    title: "Current location",
+    id: "current_location",
+  },
+  {
+    title: "Culture",
+    id: "culture",
+  },
+  {
+    title: "Measurements",
+    id: "measurements",
+  },
+  {
+    title: "Description",
+    id: "wall_description",
+  },
+  {
+    title: "Fun fact",
+    id: "fun_fact",
+  },
+];
+
+/*
+  <h3>Creators:</h3>
+  <ul></ul>
+  <h3>Original source:</h3>
+  <a href={artwork.url}>{artwork.url}</a>
+  <h3>Last update:</h3>
+  <p></p>
+
+*/
 function ArtworkInformation({ artwork }) {
   return (
     <Grid
@@ -22,40 +66,107 @@ function ArtworkInformation({ artwork }) {
       direction="row"
       justifyContent="space-between"
       alignItems="center"
+      style={{ height: "calc( 100vh - 70px )" }}
     >
-      <Grid item xs={12} md={7} style={{ backgroundColor: "orange" }}>
-        <img
-          src={artwork.images.web.url}
-          width={"100%"}
-          height={"auto"}
-          alt="piece of artwork"
-        />
+      <Grid
+        item
+        xs={12}
+        md={7}
+        style={{ overflow: "auto" }}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid container justifyContent="center" alignItems="center">
+          <img src={artwork.images.web.url} alt="piece of artwork" />
+        </Grid>
       </Grid>
       <Grid item xs={12} md={5}>
-        <Grid container direction="column">
+        <Grid
+          container
+          direction="column"
+          style={{
+            height: "calc( 100vh - 70px )",
+            overflow: "auto",
+            backgroundColor: "white",
+          }}
+        >
           <div style={{ padding: 10 }}>
-            <h1>{`${artwork.title} (${artwork.creation_date})`}</h1>
-            <h3>Technique</h3>
-            <p>{artwork.technique}</p>
-            <h3>Department</h3>
-            <p>{artwork.department}</p>
-            <h3>Culture</h3>
-            <p>{artwork.culture}</p>
-            <h3>Current location</h3>
-            <p>{artwork.current_location}</p>
-            <h3>Measurements</h3>
-            <p>{artwork.measurements}</p>
-            <h3>Description</h3>
-            <p>{artwork.wall_description}</p>
-            <h3>Creators:</h3>
-            <ul>{artwork.creators.map((creator) => creator.description)}</ul>
-            <h3>Fun fact:</h3>
-            <p>{artwork.fun_fact}</p>
-            <h3>Original source:</h3>
-            <p>{artwork.url}</p>
-            <h3>Downloads:</h3>
-            <h3>Last update:</h3>
-            <p>{moment(artwork.updated_at, "YYYY-MM-DD hh:mm:ss").fromNow()}</p>
+            <Typography
+              sx={{ ml: 2, flex: 1 }}
+              variant="h4"
+              style={{ marginBottom: "15px" }}
+            >
+              {artwork.title}
+            </Typography>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableBody>
+                  <TableRow
+                    key={"creators"}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row" align="left">
+                      <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
+                        Creators
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="left">
+                      {artwork.creators
+                        .map((creator) => creator.description)
+                        .join(" | ")}
+                    </TableCell>
+                  </TableRow>
+                  {basicInfoToDisplay.map((info) => (
+                    <TableRow
+                      key={info.title}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row" align="left">
+                        <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
+                          {info.title}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">{artwork[info["id"]]}</TableCell>
+                    </TableRow>
+                  ))}
+                  <TableRow
+                    key={"last_updated"}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row" align="left">
+                      <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
+                        Last update
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="left">
+                      {moment(
+                        artwork.updated_at,
+                        "YYYY-MM-DD hh:mm:ss"
+                      ).fromNow()}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow
+                    key={"original_source"}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row" align="left">
+                      <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
+                        Original source
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="left">
+                      <a
+                        href={artwork.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {artwork.url}
+                      </a>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
           </div>
         </Grid>
       </Grid>
