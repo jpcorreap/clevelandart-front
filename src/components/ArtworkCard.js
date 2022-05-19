@@ -37,16 +37,11 @@ const CustomizedAccordion = styled((props) => (
   },
 }));
 
-export default function ArtworkCard({
-  artwork,
-  isLoading,
-  notifyImageLoaded,
-  viewDetailHandler,
-}) {
+export default function ArtworkCard({ artwork, viewDetailHandler }) {
+  const [imageIsLoading, setImageIsLoading] = useState(true);
   const [image, setImage] = useState({});
-
   const handleImageLoaded = () => {
-    notifyImageLoaded(true);
+    setImageIsLoading(false);
   };
 
   useEffect(() => {
@@ -58,7 +53,7 @@ export default function ArtworkCard({
     }
   }, []);
 
-  if (isLoading) {
+  if (imageIsLoading) {
     return (
       <CustomizedCard elevation={0}>
         <CardContent style={{ padding: 0 }}>
@@ -90,7 +85,6 @@ export default function ArtworkCard({
         height="auto"
         src={image.src}
         alt="a piece of art at the museum"
-        onLoad={handleImageLoaded}
       />
       <CardContent style={{ padding: 0 }}>
         <CustomizedAccordion elevation={0} disableGutters>
