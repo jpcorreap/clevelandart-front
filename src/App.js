@@ -11935,6 +11935,7 @@ function App() {
         direction="row"
         justifyContent="space-between"
         alignItems="flex-start"
+        style={{ backgroundColor: "#e9e9e9" }}
       >
         <Grid
           item
