@@ -2,6 +2,7 @@ import { Grid } from "@mui/material";
 import { useState, useEffect } from "react";
 import ArtworkCard from "./components/ArtworkCard";
 import ArtworkDetail from "./components/ArtworkDetail";
+import Pagination from "./components/Pagination";
 
 const NUMBER_OF_COLUMNS = 4;
 const ITEMS_PER_COLUMN = 5;
@@ -41,22 +42,12 @@ function App() {
     setOpen(false);
   };
 
-  useEffect(() => {
-    fetch(
-      `https://openaccess-api.clevelandart.org/api/artworks?has_image=1&limit=20&skip=${
-        page * NUMBER_OF_COLUMNS * ITEMS_PER_COLUMN
-      }`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.table(data.data);
-        setData(data.data);
-        setIsFetchingData(false);
-      });
-  }, [page]);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
   if (!data) {
-    return <p>Cargando...</p>;
+    return <p>Loading...</p>;
   }
 
   const buildArtworksCards = () => {
@@ -114,10 +105,17 @@ function App() {
         alignItems="flex-start"
         style={{ backgroundColor: "#e9e9e9" }}
       >
-        {buildArtworksCards()}
-        <button onClick={() => setPage((prevPage) => prevPage + 1)}>
-          Next
-        </button>
+        <Grid container direction="column">
+          <Grid container style={{ backgroundColor: "#ff452b" }}>
+            <Pagination
+              count={data?.length ? data.length : 0}
+              page={page}
+              handleChangePage={handleChangePage}
+              rowsPerPage={NUMBER_OF_COLUMNS * ITEMS_PER_COLUMN}
+            />
+          </Grid>
+          <Grid container>{buildArtworksCards()}</Grid>
+        </Grid>
       </Grid>
       <ArtworkDetail
         artwork={detailedArtwork}
