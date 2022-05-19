@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -143,3 +144,8 @@ export default function ArtworkCard({ artwork, viewDetailHandler }) {
     </CustomizedCard>
   );
 }
+
+ArtworkCard.propTypes = {
+  viewDetailHandler: PropTypes.func.isRequired,
+  artwork: PropTypes.object.isRequired,
+};
