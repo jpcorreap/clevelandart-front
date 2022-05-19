@@ -23,7 +23,6 @@ function App() {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.info(data.data);
         setData(data.data);
         setIsFetchingData(false);
       });
