@@ -6,8 +6,12 @@ import Pagination from "./components/Pagination";
 
 const NUMBER_OF_COLUMNS = 4;
 const ITEMS_PER_COLUMN = 5;
+const FETCH_URL = "https://openaccess-api.clevelandart.org/api";
 
 function App() {
+  /* ----------------
+    STATE VARIABLES
+  ---------------- */
   const [isFetchingData, setIsFetchingData] = useState(true);
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(0);
@@ -15,10 +19,15 @@ function App() {
   const [detailedArtwork, setDetailedArtwork] = useState(undefined);
   const [open, setOpen] = useState(false);
 
+  /* ----------------
+    USE EFFECTS
+  ---------------- */
+  // Fetches the data every time the state variable "page" changes
   useEffect(() => {
     setIsFetchingData(true);
+    // Ideally this fetch should be in a services file
     fetch(
-      `https://openaccess-api.clevelandart.org/api/artworks?has_image=1&limit=20&skip=${
+      `${FETCH_URL}/artworks?has_image=1&limit=20&skip=${
         page * NUMBER_OF_COLUMNS * ITEMS_PER_COLUMN
       }`
     )
@@ -30,6 +39,9 @@ function App() {
       });
   }, [page]);
 
+  /* ----------------
+    FUNCTIONS
+  ---------------- */
   const handleViewDetail = (artwork) => {
     setDetailedArtwork(artwork);
     handleClickOpen();
@@ -47,10 +59,15 @@ function App() {
     setPage(newPage);
   };
 
+  /* ----------------
+    JSX ELEMENTS
+  ---------------- */
   if (!data) {
-    return <p>Loading...</p>;
+    return <></>;
   }
 
+  // Dinamycally builds NUMBER_OF_COLUMNS * ITEMS_PER_COLUMN organized in
+  // NUMBER_OF_COLUMNS columns with ITEMS_PER_COLUMN in each column
   const buildArtworksCards = () => {
     const columns = [];
     for (

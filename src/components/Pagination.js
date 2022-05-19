@@ -97,3 +97,10 @@ export default function Pagination({
     />
   );
 }
+
+Pagination.propTypes = {
+  rowsPerPage: PropTypes.number.isRequired,
+  count: PropTypes.number.isRequired,
+  page: PropTypes.number.isRequired,
+  handleChangePage: PropTypes.func.isRequired,
+};
