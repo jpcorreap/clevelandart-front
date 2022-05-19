@@ -6,16 +6,21 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Grid,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Skeleton from "@mui/material/Skeleton";
-import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const CustomizedCard = styled((props) => <Card {...props} />)(() => ({
   margin: "20px 10px 20px 10px",
   borderRadius: "0px 0px 20px 20px",
-  minHeight: "200px",
 }));
 
 const CustomizedAccordion = styled((props) => (
@@ -60,7 +65,7 @@ export default function ArtworkCard({ artwork, isLoading, notifyImageLoaded }) {
             <Skeleton
               variant="rectangular"
               width={"100%"}
-              height={30}
+              height={80}
               animation="wave"
               style={{ borderRadius: "20px" }}
             />
@@ -86,14 +91,26 @@ export default function ArtworkCard({ artwork, isLoading, notifyImageLoaded }) {
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
-            style={{ padding: "0px", margin: "0px" }}
+            style={{
+              padding: 0,
+              margin: 0,
+            }}
           >
-            <Typography gutterBottom variant="h6" component="div">
+            <Typography
+              gutterBottom
+              variant="h6"
+              component="div"
+              style={{ margin: 0, padding: 0 }}
+            >
               {artwork.title}
             </Typography>
           </AccordionSummary>
           <AccordionDetails
-            style={{ backgroundColor: "#FEF1F0", borderRadius: "20px" }}
+            style={{
+              backgroundColor: "#FEF1F0",
+              borderRadius: "20px",
+              marginBottom: "10px",
+            }}
           >
             <Typography variant="body2" color="text.secondary">
               {artwork.wall_description}
@@ -101,9 +118,25 @@ export default function ArtworkCard({ artwork, isLoading, notifyImageLoaded }) {
           </AccordionDetails>
         </CustomizedAccordion>
       </CardContent>
-      <CardActions>
-        <Button size="small">More details</Button>
-        <Button size="small">Save in favorites</Button>
+      <CardActions style={{ padding: "0px 10px 10px 10px" }}>
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Button
+            size="large"
+            variant="contained"
+            style={{ borderRadius: "20px", backgroundColor: "#ff452b" }}
+            disableElevation
+          >
+            View detailed info
+          </Button>
+          <IconButton aria-label="favorite" size="large">
+            <FavoriteIcon style={{ color: "#ff452b" }} />
+          </IconButton>
+        </Grid>
       </CardActions>
     </CustomizedCard>
   );

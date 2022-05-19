@@ -11907,6 +11907,9 @@ const data = [
   },
 ];
 
+const NUMBER_OF_COLUMNS = 4;
+const ITEMS_PER_COLUMN = 5;
+
 function App() {
   //const [data, setData] = useState(undefined);
   const [page, setPage] = useState(0);
@@ -11933,6 +11936,45 @@ function App() {
   //     });
   // }, [page]);
 
+  const buildArtworksCards = () => {
+    const columns = [];
+
+    for (
+      let columnNumber = 0;
+      columnNumber < NUMBER_OF_COLUMNS;
+      columnNumber++
+    ) {
+      const column = (
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          md={3}
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          {data /*.data*/
+            .slice(
+              columnNumber * ITEMS_PER_COLUMN,
+              ITEMS_PER_COLUMN * (columnNumber + 1)
+            )
+            .map((artwork) => (
+              <ArtworkCard
+                key={`artwork_${artwork.id}`}
+                artwork={artwork}
+                notifyImageLoaded={imageLoaded}
+                isLoading={loading}
+              />
+            ))}
+        </Grid>
+      );
+
+      columns.push(column);
+    }
+
+    return columns;
+  };
+
   return (
     <>
       <Grid
@@ -11942,84 +11984,11 @@ function App() {
         alignItems="flex-start"
         style={{ backgroundColor: "#e9e9e9" }}
       >
-        <Grid
-          item
-          xs={12}
-          sm={6}
-          md={3}
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          {data /*.data*/
-            .slice(0, 5)
-            .map((artwork) => (
-              <ArtworkCard
-                key={`artwork_${artwork.id}`}
-                artwork={artwork}
-                notifyImageLoaded={imageLoaded}
-                isLoading={loading}
-              />
-            ))}
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={6}
-          md={3}
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          {data /*.data*/
-            .slice(5, 10)
-            .map((artwork) => (
-              <ArtworkCard
-                key={`artwork_${artwork.id}`}
-                artwork={artwork}
-                notifyImageLoaded={imageLoaded}
-                isLoading={loading}
-              />
-            ))}
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={6}
-          md={3}
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          {data /*.data*/
-            .slice(10, 15)
-            .map((artwork) => (
-              <ArtworkCard
-                key={`artwork_${artwork.id}`}
-                artwork={artwork}
-                notifyImageLoaded={imageLoaded}
-                isLoading={loading}
-              />
-            ))}
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={6}
-          md={3}
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          {data /*.data*/
-            .slice(15, 20)
-            .map((artwork) => (
-              <ArtworkCard
-                key={`artwork_${artwork.id}`}
-                artwork={artwork}
-                notifyImageLoaded={imageLoaded}
-                isLoading={loading}
-              />
-            ))}
-        </Grid>
+        {buildArtworksCards()}
+        <button onClick={() => setPage((prevPage) => prevPage + 1)}>
+          Next
+        </button>
       </Grid>
-      <button onClick={() => setPage((prevPage) => prevPage + 1)}>Next</button>
     </>
   );
 }
