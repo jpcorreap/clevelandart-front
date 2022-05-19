@@ -50,15 +50,6 @@ const basicInfoToDisplay = [
   },
 ];
 
-/*
-  <h3>Creators:</h3>
-  <ul></ul>
-  <h3>Original source:</h3>
-  <a href={artwork.url}>{artwork.url}</a>
-  <h3>Last update:</h3>
-  <p></p>
-
-*/
 function ArtworkInformation({ artwork }) {
   return (
     <Grid
@@ -178,13 +169,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function ArtworkDetail({
-  open,
-  setOpen,
-  handleClickOpen,
-  handleClose,
-  artwork,
-}) {
+export default function ArtworkDetail({ open, handleClose, artwork }) {
   if (!artwork) {
     return <></>;
   }
