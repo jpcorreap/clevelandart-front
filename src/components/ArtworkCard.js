@@ -37,7 +37,12 @@ const CustomizedAccordion = styled((props) => (
   },
 }));
 
-export default function ArtworkCard({ artwork, isLoading, notifyImageLoaded }) {
+export default function ArtworkCard({
+  artwork,
+  isLoading,
+  notifyImageLoaded,
+  viewDetailHandler,
+}) {
   const [image, setImage] = useState({});
 
   const handleImageLoaded = () => {
@@ -129,6 +134,7 @@ export default function ArtworkCard({ artwork, isLoading, notifyImageLoaded }) {
             size="large"
             variant="contained"
             style={{ borderRadius: "20px", backgroundColor: "#ff452b" }}
+            onClick={() => viewDetailHandler(artwork)}
             disableElevation
           >
             View detailed info

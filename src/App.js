@@ -1,6 +1,7 @@
 import { Grid } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import ArtworkCard from "./components/ArtworkCard";
+import ArtworkDetail from "./components/ArtworkDetail";
 
 const data = [
   {
@@ -11913,6 +11914,7 @@ const ITEMS_PER_COLUMN = 5;
 function App() {
   //const [data, setData] = useState(undefined);
   const [page, setPage] = useState(0);
+  const [detailedArtwork, setDetailedArtwork] = useState(undefined);
 
   const [loading, setLoading] = useState(true);
   const counter = useRef(0);
@@ -11935,6 +11937,21 @@ function App() {
   //       setData(data);
   //     });
   // }, [page]);
+
+  const handleViewDetail = (artwork) => {
+    setDetailedArtwork(artwork);
+    handleClickOpen();
+  };
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const buildArtworksCards = () => {
     const columns = [];
@@ -11964,6 +11981,7 @@ function App() {
                 artwork={artwork}
                 notifyImageLoaded={imageLoaded}
                 isLoading={loading}
+                viewDetailHandler={handleViewDetail}
               />
             ))}
         </Grid>
@@ -11989,6 +12007,13 @@ function App() {
           Next
         </button>
       </Grid>
+      <ArtworkDetail
+        artwork={detailedArtwork}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+        open={open}
+        setOpen={setOpen}
+      />
     </>
   );
 }
