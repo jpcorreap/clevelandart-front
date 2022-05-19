@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Alert, Grid } from "@mui/material";
 import { useState, useEffect } from "react";
 import ArtworkCard from "./components/ArtworkCard";
 import ArtworkDetail from "./components/ArtworkDetail";
@@ -6,19 +6,29 @@ import Pagination from "./components/Pagination";
 
 const NUMBER_OF_COLUMNS = 4;
 const ITEMS_PER_COLUMN = 5;
+const API_FETCH_URL = "http://127.0.0.1:5000";
 
 function App() {
+  /* ----------------
+    STATE VARIABLES
+  ---------------- */
   const [isFetchingData, setIsFetchingData] = useState(true);
+  const [data, setData] = useState(undefined);
+  const [error, setError] = useState("");
+  const [detailedArtwork, setDetailedArtwork] = useState(undefined);
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(0);
-  const [data, setData] = useState(undefined);
-  const [detailedArtwork, setDetailedArtwork] = useState(undefined);
   const [open, setOpen] = useState(false);
 
+  /* ----------------
+    USE EFFECTS
+  ---------------- */
+  // Fetch the data every time the state variable "page" changes
   useEffect(() => {
     setIsFetchingData(true);
+    // Ideally this fetch should be in a services file
     fetch(
-      `https://openaccess-api.clevelandart.org/api/artworks?has_image=1&limit=20&skip=${
+      `${API_FETCH_URL}/artworks?has_image=1&limit=20&skip=${
         page * NUMBER_OF_COLUMNS * ITEMS_PER_COLUMN
       }`
     )
@@ -27,9 +37,13 @@ function App() {
         setData(data.data);
         setCount(data.info.total);
         setIsFetchingData(false);
-      });
+      })
+      .catch((err) => setError(err));
   }, [page]);
 
+  /* ----------------
+    FUNCTIONS
+  ---------------- */
   const handleViewDetail = (artwork) => {
     setDetailedArtwork(artwork);
     handleClickOpen();
@@ -47,10 +61,12 @@ function App() {
     setPage(newPage);
   };
 
-  if (!data) {
-    return <p>Loading...</p>;
-  }
+  /* ----------------
+    JSX ELEMENTS
+  ---------------- */
 
+  // Dinamycally builds NUMBER_OF_COLUMNS * ITEMS_PER_COLUMN organized in
+  // NUMBER_OF_COLUMNS columns with ITEMS_PER_COLUMN in each column
   const buildArtworksCards = () => {
     const columns = [];
     for (
@@ -97,6 +113,14 @@ function App() {
     return columns;
   };
 
+  if (isFetchingData) {
+    return <p>Loading data...</p>;
+  }
+
+  if (error) {
+    return <Alert severity="error">{error}</Alert>;
+  }
+
   return (
     <>
       <Grid
@@ -106,7 +130,7 @@ function App() {
         alignItems="flex-start"
         style={{ backgroundColor: "#e9e9e9" }}
       >
-        <Grid container direction="column">
+        <Grid container>
           <Grid container style={{ backgroundColor: "#ff452b" }}>
             <Pagination
               count={count}

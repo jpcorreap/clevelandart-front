@@ -1,6 +1,7 @@
-import { Grid } from "@mui/material";
-import moment from "moment";
 import * as React from "react";
+import PropTypes from "prop-types";
+
+import { Grid } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,7 +14,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import moment from "moment";
 
 const basicInfoToDisplay = [
   {
@@ -50,6 +51,10 @@ const basicInfoToDisplay = [
   },
 ];
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 function ArtworkInformation({ artwork }) {
   return (
     <Grid
@@ -81,93 +86,95 @@ function ArtworkInformation({ artwork }) {
             backgroundColor: "white",
           }}
         >
-          <div style={{ padding: 10 }}>
+          <div>
             <Typography
               sx={{ ml: 2, flex: 1 }}
               variant="h4"
-              style={{ marginBottom: "15px" }}
+              style={{ margin: "15px" }}
             >
               {artwork.title}
             </Typography>
-            <TableContainer component={Paper}>
-              <Table aria-label="simple table">
-                <TableBody>
-                  <TableRow
-                    key={"creators"}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row" align="left">
-                      <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
-                        Creators
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="left">
-                      {artwork.creators
-                        .map((creator) => creator.description)
-                        .join(" | ")}
-                    </TableCell>
-                  </TableRow>
-                  {basicInfoToDisplay.map((info) => (
+            <div>
+              <TableContainer>
+                <Table aria-label="simple table">
+                  <TableBody>
                     <TableRow
-                      key={info.title}
+                      key={"creators"}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell component="th" scope="row" align="left">
                         <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
-                          {info.title}
+                          {artwork.creators.length > 1 ? "Creators" : "Creator"}
                         </Typography>
                       </TableCell>
-                      <TableCell align="left">{artwork[info["id"]]}</TableCell>
+                      <TableCell align="left">
+                        {artwork.creators
+                          .map((creator) => creator.description)
+                          .join(" | ")}
+                      </TableCell>
                     </TableRow>
-                  ))}
-                  <TableRow
-                    key={"last_updated"}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row" align="left">
-                      <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
-                        Last update
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="left">
-                      {moment(
-                        artwork.updated_at,
-                        "YYYY-MM-DD hh:mm:ss"
-                      ).fromNow()}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow
-                    key={"original_source"}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row" align="left">
-                      <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
-                        Original source
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="left">
-                      <a
-                        href={artwork.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    {basicInfoToDisplay.map((info) => (
+                      <TableRow
+                        key={info.title}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
                       >
-                        {artwork.url}
-                      </a>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
+                        <TableCell component="th" scope="row" align="left">
+                          <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
+                            {info.title}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="left">
+                          {artwork[info["id"]]}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    <TableRow
+                      key={"last_updated"}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row" align="left">
+                        <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
+                          Last update
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        {moment(
+                          artwork.updated_at,
+                          "YYYY-MM-DD hh:mm:ss"
+                        ).fromNow()}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow
+                      key={"original_source"}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row" align="left">
+                        <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
+                          Original source
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="left">
+                        <a
+                          href={artwork.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {artwork.url}
+                        </a>
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
           </div>
         </Grid>
       </Grid>
     </Grid>
   );
 }
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 export default function ArtworkDetail({ open, handleClose, artwork }) {
   if (!artwork) {
@@ -203,3 +210,9 @@ export default function ArtworkDetail({ open, handleClose, artwork }) {
     </Dialog>
   );
 }
+
+ArtworkDetail.propTypes = {
+  open: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  artwork: PropTypes.object.isRequired,
+};

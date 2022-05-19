@@ -71,13 +71,6 @@ function PaginationActions({ count, page, rowsPerPage, onPageChange }) {
   );
 }
 
-PaginationActions.propTypes = {
-  count: PropTypes.number.isRequired,
-  onPageChange: PropTypes.func.isRequired,
-  page: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired,
-};
-
 export default function Pagination({
   rowsPerPage,
   count,
@@ -97,3 +90,10 @@ export default function Pagination({
     />
   );
 }
+
+Pagination.propTypes = {
+  rowsPerPage: PropTypes.number.isRequired,
+  count: PropTypes.number.isRequired,
+  page: PropTypes.number.isRequired,
+  handleChangePage: PropTypes.func.isRequired,
+};
