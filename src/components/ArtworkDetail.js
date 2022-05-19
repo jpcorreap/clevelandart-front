@@ -74,6 +74,10 @@ export default function ArtworkDetail({
   handleClose,
   artwork,
 }) {
+  if (!artwork) {
+    return <></>;
+  }
+
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
