@@ -50,10 +50,12 @@ export default function ArtworkCard({
   };
 
   useEffect(() => {
-    const image = new Image();
-    image.onload = handleImageLoaded;
-    image.src = artwork.images.web.url;
-    setImage(image);
+    if (artwork) {
+      const image = new Image();
+      image.onload = handleImageLoaded;
+      image.src = artwork.images.web.url;
+      setImage(image);
+    }
   }, []);
 
   if (isLoading) {
