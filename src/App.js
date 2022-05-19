@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import ArtworkCard from "./components/ArtworkCard";
 import ArtworkDetail from "./components/ArtworkDetail";
 
@@ -40,6 +40,24 @@ function App() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    fetch(
+      `https://openaccess-api.clevelandart.org/api/artworks?has_image=1&limit=20&skip=${
+        page * NUMBER_OF_COLUMNS * ITEMS_PER_COLUMN
+      }`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.table(data.data);
+        setData(data.data);
+        setIsFetchingData(false);
+      });
+  }, [page]);
+
+  if (!data) {
+    return <p>Cargando...</p>;
+  }
 
   const buildArtworksCards = () => {
     const columns = [];
