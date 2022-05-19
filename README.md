@@ -1,9 +1,11 @@
 # Cleveland Museum of Art
+A frontend made in React to consume Cleveland Museum of Art's API: https://openaccess-api.clevelandart.org/
 
-Frontend made in React to consume Cleveland Museum of Art's API:
-https://openaccess-api.clevelandart.org/
+![Parte 1](https://user-images.githubusercontent.com/47229643/169282496-e252e1ea-d3d6-4b80-addb-5f86a6a0f0da.gif)
 
-See live demo here:
+![Parte 2](https://user-images.githubusercontent.com/47229643/169282519-9e02ebf2-a8d2-474f-ac5d-eadcf966e96c.gif)
+
+**Interact with live demo here!**
 https://clevelandart-jpcorreap.web.app/
 
 ## Future work:
