@@ -10,6 +10,7 @@ const ITEMS_PER_COLUMN = 5;
 function App() {
   const [isFetchingData, setIsFetchingData] = useState(true);
   const [page, setPage] = useState(0);
+  const [count, setCount] = useState(0);
   const [data, setData] = useState(undefined);
   const [detailedArtwork, setDetailedArtwork] = useState(undefined);
   const [open, setOpen] = useState(false);
@@ -24,6 +25,7 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         setData(data.data);
+        setCount(data.info.total);
         setIsFetchingData(false);
       });
   }, [page]);
@@ -107,7 +109,7 @@ function App() {
         <Grid container direction="column">
           <Grid container style={{ backgroundColor: "#ff452b" }}>
             <Pagination
-              count={data?.length ? data.length : 0}
+              count={count}
               page={page}
               handleChangePage={handleChangePage}
               rowsPerPage={NUMBER_OF_COLUMNS * ITEMS_PER_COLUMN}
